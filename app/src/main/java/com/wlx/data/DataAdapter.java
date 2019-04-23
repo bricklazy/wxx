@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.wlx.application.R;
 import com.wlx.utils.DateUtil;
-import com.wlx.utils.OperateDialogUtil;
 import java.util.ArrayList;
 import java.util.List;
 

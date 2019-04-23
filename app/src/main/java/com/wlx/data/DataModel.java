@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -73,6 +75,7 @@ public class DataModel {
     public void delMsg(int id, BaseCallBack<Integer> baseCallBack) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
+
         RetrofitManager.getInstance()
                 .createReq(DataApi.class)
                 .DelMsg(map)
@@ -105,9 +108,22 @@ public class DataModel {
         map.put("messageType", msg_type);
         map.put("message", msg);
         map.put("imgName", imgName);
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("imei", imei);
+            jsonObject.put("messageType", msg_type);
+            jsonObject.put("message", msg);
+            jsonObject.put("imgName", imgName);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), jsonObject.toString());
+
         RetrofitManager.getInstance()
                 .createReq(DataApi.class)
-                .UploadMsg(map)
+                .UploadMsg(requestBody)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<DelMsg<Integer>>() {

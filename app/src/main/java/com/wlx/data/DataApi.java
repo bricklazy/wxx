@@ -5,6 +5,9 @@ import com.wlx.network.GetMsg;
 
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
@@ -20,4 +23,7 @@ public interface DataApi {
 
     @POST("UploadMsg")
     Observable<DelMsg<Integer>> UploadMsg(@QueryMap Map<String, Object> map);
+
+    @POST("UploadMsg")
+    Observable<DelMsg<Integer>> UploadMsg(@Body RequestBody body);
 }
