@@ -93,6 +93,9 @@ public class DataAdapter extends RecyclerView.Adapter {
     public void removeData(int position) {
         list.remove(position);
         notifyItemRemoved(position);
+        if (position != list.size()) {
+            notifyItemRangeChanged(position, list.size() - position);
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{

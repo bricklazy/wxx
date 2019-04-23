@@ -113,17 +113,20 @@ public class DataModel {
         try {
             jsonObject.put("imei", imei);
             jsonObject.put("messageType", msg_type);
-            jsonObject.put("message", msg);
             jsonObject.put("imgName", imgName);
+            jsonObject.put("message", msg);
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+//        String body = "imei="+ imei +"&messageType=" + msg_type+"&imgName="+ imgName+"&message="+msg;
+
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), jsonObject.toString());
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), body);
 
         RetrofitManager.getInstance()
                 .createReq(DataApi.class)
-                .UploadMsg(requestBody)
+                .UploadMsg(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<DelMsg<Integer>>() {
