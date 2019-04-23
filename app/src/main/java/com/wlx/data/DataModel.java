@@ -119,7 +119,7 @@ public class DataModel {
             e.printStackTrace();
         }
 
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), jsonObject.toString());
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
 
         RetrofitManager.getInstance()
                 .createReq(DataApi.class)
