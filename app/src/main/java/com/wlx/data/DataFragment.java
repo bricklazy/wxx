@@ -25,6 +25,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.wlx.application.R;
 import com.wlx.base.BaseCallBack;
 import com.wlx.base.BaseFragment;
+import com.wlx.utils.Constants;
 import com.wlx.utils.CustomToast;
 import com.wlx.utils.DisplayUtil;
 import com.wlx.utils.OperateDialogUtil;
@@ -119,7 +120,7 @@ public class DataFragment extends BaseFragment implements DataAdapter.OnItemClic
     }
 
     private void initDatas() {
-        dataModel.getDatas(new BaseCallBack<List<Data>>() {
+        dataModel.getDatas(Constants.getIMEI(getContext()), new BaseCallBack<List<Data>>() {
 
             @Override
             public void success(List<Data> data) {
@@ -136,7 +137,7 @@ public class DataFragment extends BaseFragment implements DataAdapter.OnItemClic
     }
 
     private void moreDatas() {
-        dataModel.getMoreDatas(new BaseCallBack<List<Data>>() {
+        dataModel.getMoreDatas(Constants.getIMEI(getContext()), new BaseCallBack<List<Data>>() {
 
             @Override
             public void success(List<Data> data) {
@@ -209,7 +210,7 @@ public class DataFragment extends BaseFragment implements DataAdapter.OnItemClic
         OperateDialogUtil.getIns().showDelDialog(getContext(), "确定要删除此记录？", new OperateDialogUtil.DialogCallBack() {
             @Override
             public void ok() {
-                dataModel.delMsg(data.getId(), new BaseCallBack<Integer>() {
+                dataModel.delMsg(data.getId(), Constants.getIMEI(getContext()), new BaseCallBack<Integer>() {
                     @Override
                     public void success(Integer code) {
                         if(code==0){

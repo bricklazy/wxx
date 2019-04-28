@@ -30,16 +30,18 @@ public class DataModel {
     private final int pageSize = 20;
     private int pageCount = 1;
 
-    public void getDatas(BaseCallBack<List<Data>> baseCallBack) {
+    public void getDatas(String imei, BaseCallBack<List<Data>> baseCallBack) {
         page = 1;
-        getMoreDatas(baseCallBack);
+        getMoreDatas(imei, baseCallBack);
     }
 
-    public void getMoreDatas(BaseCallBack<List<Data>> baseCallBack) {
+    public void getMoreDatas(String imei, BaseCallBack<List<Data>> baseCallBack) {
         Map<String, Object> map = new HashMap<>();
         if(page>pageCount){
+            baseCallBack.faild("没有了");
             return;
         }
+        map.put("imei", imei);
         map.put("page", page);
         map.put("rows", pageSize);
 
@@ -72,9 +74,10 @@ public class DataModel {
     }
 
 
-    public void delMsg(int id, BaseCallBack<Integer> baseCallBack) {
+    public void delMsg(int id, String imei,BaseCallBack<Integer> baseCallBack) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
+        map.put("imei", imei);
 
         RetrofitManager.getInstance()
                 .createReq(DataApi.class)
