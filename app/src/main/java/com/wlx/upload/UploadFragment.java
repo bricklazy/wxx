@@ -285,11 +285,11 @@ public class UploadFragment extends BaseFragment {
             //写入数组
             is.read(data);
             //用默认的编码格式进行编码
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                result = java.util.Base64.getUrlEncoder().encodeToString(data);
-            }else {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                result = java.util.Base64.getUrlEncoder().encodeToString(data);
+//            }else {
                 result = android.util.Base64.encodeToString(data, android.util.Base64.DEFAULT);
-            }
+//            }
 //            result = Base64.encode(data);
         }catch (Exception e){
             e.printStackTrace();

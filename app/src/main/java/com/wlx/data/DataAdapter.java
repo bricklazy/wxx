@@ -1,16 +1,24 @@
 package com.wlx.data;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.wlx.application.R;
 import com.wlx.utils.DateUtil;
+import com.wlx.utils.DisplayUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,24 +44,46 @@ public class DataAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Data data = list.get(position);
-
+        int pic_max_width = DisplayUtil.getScreenWidth(context)-DisplayUtil.dip2px(context, 10);
         if(holder instanceof ViewImgHolder){
             ViewImgHolder viewHolder = (ViewImgHolder) holder;
-            Glide.with(context).load(data.getMessage()).centerCrop().into(viewHolder.iv_cover);
+            Glide.with(context).load(data.getMessage()).asBitmap().centerCrop().into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    /*int widht = resource.getWidth();
+                    int height = resource.getHeight();
+                    if(widht>pic_max_width){
+                        float multiple = ((float) widht)/pic_max_width+0.5f;
+                        widht = (int) (widht/multiple);
+                        height = (int) (height/multiple);
+                    }
+                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) viewHolder.iv_cover.getLayoutParams();
+                    params.width = widht;
+                    params.height = height;
+                    viewHolder.iv_cover.setLayoutParams(params);*/
+                    viewHolder.iv_cover.setImageBitmap(resource);
+                }
+            });
+
+            holder.itemView.setOnClickListener(v -> {
+                onItemClickListener.click(position, data);
+            });
             viewHolder.tvTime.setText(DateUtil.dateToString(DateUtil.YYYY_MM_DD_hh_mm_ss, data.getTime()));
         }else {
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.tv_lable.setText(data.getMessage());
             viewHolder.tvTime.setText(DateUtil.dateToString(DateUtil.YYYY_MM_DD_hh_mm_ss, data.getTime()));
+            holder.itemView.setOnClickListener(null);
         }
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                onItemClickListener.click(position, data);
+                onItemClickListener.longClick(position, data);
                 return true;
             }
         });
+
     }
 
     @Override
@@ -124,5 +154,6 @@ public class DataAdapter extends RecyclerView.Adapter {
 
     interface OnItemClickListener{
         void click(int position, Data data);
+        void longClick(int position, Data data);
     }
 }
