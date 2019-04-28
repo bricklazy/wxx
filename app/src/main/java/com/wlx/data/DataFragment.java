@@ -1,7 +1,10 @@
 package com.wlx.data;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.os.Build;
+import android.provider.Settings;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -62,8 +65,13 @@ public class DataFragment extends BaseFragment implements DataAdapter.OnItemClic
         }
         params = new WindowManager.LayoutParams();
         // 系统级别的窗口
-        params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
-                | WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
+        int LAYOUT_FLAG;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
+        }
+        params.type = LAYOUT_FLAG;
         // 居中显示
         params.gravity = Gravity.CENTER;
         // 设置背景透明
@@ -146,9 +154,29 @@ public class DataFragment extends BaseFragment implements DataAdapter.OnItemClic
 
     @Override
     public void click(int position, Data data) {
+
+        if (Build.VERSION.SDK_INT >= 23)
+        {
+            if(!Settings.canDrawOverlays(getContext())){
+                CustomToast.showToast(getContext(), "请打开允许显示在其他应用上层");
+                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                 startActivity(intent);
+                 return;
+            } else {
+                //绘ui代码, 这里说明6.0系统已经有权限了
+            }
+        }
+        else
+        {
+            //绘ui代码,这里android6.0以下的系统直接绘出即可
+
+        }
+
+
         if(data!=null&&data.getMessageType()==2){
 
             PhotoView pv_img = d_view.findViewById(R.id.pv_img);
+            pv_img.setImageDrawable(null);
             pv_img.setOnClickListener(v -> {
                 wm.removeView(d_view);
             });
@@ -173,6 +201,7 @@ public class DataFragment extends BaseFragment implements DataAdapter.OnItemClic
                 }
             });
         }
+
     }
 
     @Override
