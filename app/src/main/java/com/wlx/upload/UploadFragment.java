@@ -170,7 +170,7 @@ public class UploadFragment extends BaseFragment {
             Matisse.from(getActivity())
                     .choose(MimeType.ofImage()) // 选择 mime 的类型
                     .capture(true)  // 开启相机，和 captureStrategy 一并使用否则报错
-                    .captureStrategy(new CaptureStrategy(true,"com.wlx.application.wxx.fileprovider")) // 拍照的图片路径
+                    .captureStrategy(new CaptureStrategy(true,"com.wlx.application.wxx.n.fileprovider")) // 拍照的图片路径
                     .showSingleMediaType(true)
                     .countable(true)
                     .maxSelectable(1) // 图片选择的最多数量

@@ -7,7 +7,10 @@ import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 
 public class Constants {
-    public static final String BASE_URL = "http://work.zanykj.com/servlet/";
+    /*外部地址*/
+//    public static final String BASE_URL = "http://work.zanykj.com/servlet/";
+    /*内部地址*/
+    public static final String BASE_URL = "http://work123.zanykj.com/servlet/";
 
     public static String getIMEI(Context context) {
         String imei = null;

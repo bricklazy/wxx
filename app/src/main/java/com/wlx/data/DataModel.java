@@ -68,6 +68,8 @@ public class DataModel {
                             page+=1;
                             pageCount = getMsg.getCount();
                             baseCallBack.success(getMsg.getRows());
+                        }else{
+                            baseCallBack.faild(String.valueOf(getMsg.getRCode()));
                         }
                     }
                 });
